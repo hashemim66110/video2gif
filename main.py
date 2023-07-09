@@ -5,7 +5,6 @@ gi.require_version('Gtk','3.0');
 from gi.repository import Gtk
 import os
 
-
 convert_button = Gtk.Button(label="Convert")
 convert_button.set_sensitive(False)
 
@@ -19,6 +18,7 @@ target_address_input.set_placeholder_text("Output file will go here")
 target_address_input.set_sensitive(False)
 
 class MainWindow(Gtk.Window):
+	command_prepare = ''
 	def __init__(self):
 		Gtk.Window.__init__(self, title="Video2Gif")
 		self.set_default_size(400,200)
@@ -64,8 +64,13 @@ class MainWindow(Gtk.Window):
 
 	def choose_button_clicked(self,widget):
 		dialog = Gtk.FileChooserDialog(title="Select Video File",parent=self,action=Gtk.FileChooserAction.OPEN)
+		dialog_filter = Gtk.FileFilter()
+		dialog_filter.set_name("Videos")
+		video_support = ['*.mp4','*.m4p','*.m4v','*.mpg','*.mpeg','*.mkv','*.flv','*.vob','*.ogg','*.ogv','*.gif','*.drc','*.gifv','*.mng','*.avi','*.wmv','*.mov','*.qt']
+		for i in video_support:
+			dialog_filter.add_pattern(i)  # whats the pattern for a video file
+		dialog.add_filter(dialog_filter)
 		dialog.add_buttons("Cancel",Gtk.ResponseType.CANCEL,"Open",Gtk.ResponseType.OK)
-
 		response = dialog.run()
 		if response == Gtk.ResponseType.OK:
 			source_file = dialog.get_filename()
@@ -87,9 +92,11 @@ class MainWindow(Gtk.Window):
 
 		dialog.destroy()
 
+
 	def convert_button_clicked(self, widget):
 		convert_button.set_sensitive(False)
-		command = "ffmpeg -y -i "+self.source_file+" -filter:v fps="+self.rate+" "+self.target_file
+		command_prepare = self.source_file+" -filter:v fps="+self.rate+" "+self.target_file
+		command = "ffmpeg -y -i "+ command_prepare
 		print("> "+command)
 		os.system(command)
 		print('Proccess FFMPEG Done !')
