@@ -66,7 +66,7 @@ class MainWindow(Gtk.Window):
 		dialog = Gtk.FileChooserDialog(title="Select Video File",parent=self,action=Gtk.FileChooserAction.OPEN)
 		dialog_filter = Gtk.FileFilter()
 		dialog_filter.set_name("Videos")
-		video_support = ['*.mp4','*.m4p','*.m4v','*.mpg','*.mpeg','*.mkv','*.flv','*.vob','*.ogg','*.ogv','*.gif','*.drc','*.gifv','*.mng','*.avi','*.wmv','*.mov','*.qt']
+		video_support = ['*.mp4','*.m4p','*.m4v','*.mpg','*.mpeg','*.mkv','*.flv','*.vob','*.ogg','*.ogv','*.gif','*.drc','*.gifv','*.mng','*.avi','*.wmv','*.mov']
 		for i in video_support:
 			dialog_filter.add_pattern(i)  # whats the pattern for a video file
 		dialog.add_filter(dialog_filter)
@@ -95,8 +95,8 @@ class MainWindow(Gtk.Window):
 
 	def convert_button_clicked(self, widget):
 		convert_button.set_sensitive(False)
-		command_prepare = self.source_file+" -filter:v fps="+self.rate+" "+self.target_file
-		command = "ffmpeg -y -i "+ command_prepare
+		command_prepare = self.source_file+"' -filter:v fps="+self.rate+" '"+self.target_file+"'"
+		command = "ffmpeg -y -i '"+ command_prepare
 		print("> "+command)
 		os.system(command)
 		print('Proccess FFMPEG Done !')
