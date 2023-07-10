@@ -14,8 +14,8 @@ Click Convert
 Output Gif file will be saved in same directory with same name.
 
 
-##Bug Fixes
+## Bug Fixes
 Problem with Files with ' ' in path solved ✔️
 
-##New Features
+## New Features
 File Format Limited to Videos only (Thanks to SinaSSD)
